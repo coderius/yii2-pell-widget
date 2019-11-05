@@ -15,7 +15,7 @@ use yii\web\JsExpression;
 use yii\helpers\ArrayHelper;
 
 /**
- * Pell renders a pell js plugin for WYSIWYG editing.
+ * Pell widget renders a pell js plugin for WYSIWYG editing.
  */ 
 class Pell extends InputWidget
 {
@@ -29,13 +29,6 @@ class Pell extends InputWidget
     public $clientOptions = [];
 
     /**
-     * Generated HTML tag textarea
-     *
-     * @var string
-     */
-    protected $textarea;
-
-    /**
      * Generated HTML wrapper tag div
      *
      * @var string
@@ -43,15 +36,15 @@ class Pell extends InputWidget
     protected $wrapper;
     
     /**
-     * Undocumented function
-     *
+     * Initializes the Pell widget.
+     * This method will initialize required property values and create wrapper html tag.
      * @return void
      */
     public function init()
     {
         parent::init();
 
-        $this->textarea = $this->getTextArea();
+        $textarea = $this->getTextArea();
         
         if(!isset($this->wrapperOptions['tag'])){
             $this->wrapperOptions['tag'] = 'div';
@@ -69,11 +62,11 @@ class Pell extends InputWidget
         $tag = $this->wrapperOptions['tag'];
         ArrayHelper::remove($this->wrapperOptions, 'tag');
         
-        $this->wrapper = Html::tag($tag, $this->textarea, $this->wrapperOptions);
+        $this->wrapper = Html::tag($tag, $textarea, $this->wrapperOptions);
     }
 
     /**
-     * @inheritdoc
+     * Runs the widget.
      */
     public function run()
     {
@@ -85,6 +78,7 @@ class Pell extends InputWidget
 
     /**
      * Registers Pell js plugin
+     * @return void
      */
     protected function registerClientScript()
     {
@@ -122,9 +116,9 @@ class Pell extends InputWidget
     }
 
     /**
-     * Undocumented function
+     * Return wrapper id for wrapper tag id attribute
      *
-     * @return void
+     * @return string
      */
     protected function getWrapperId()
     {
@@ -132,7 +126,8 @@ class Pell extends InputWidget
     }
 
     /**
-     * Undocumented function
+     * Generates a textarea tag for the given model attribute.
+     * The model attribute value will be used as the content in the textarea.
      *
      * @return void
      */
@@ -150,9 +145,9 @@ class Pell extends InputWidget
     }
 
     /**
-     * Undocumented function
+     * Return a textarea attribute id
      *
-     * @return void
+     * @return string
      */
     protected function getTextAreaId()
     {
@@ -160,9 +155,9 @@ class Pell extends InputWidget
     }
 
     /**
-     * Undocumented function
+     * Return default value returned of model attribute if exists or by passed to `options['value']`
      *
-     * @return void
+     * @return string
      */
     protected function getDefaultValue()
     {
@@ -177,7 +172,7 @@ class Pell extends InputWidget
     }
 
     /**
-     * Undocumented function
+     * Check is default value is not empty
      *
      * @return boolean
      */

@@ -9,6 +9,9 @@ namespace coderius\pell;
 
 use yii\web\AssetBundle;
 
+/**
+ * This asset bundle provides the javascript and css files for the [[Pell]] widget.
+ */
 class PellAsset extends AssetBundle
 {
     public $sourcePath = '@npm/pell/dist';
