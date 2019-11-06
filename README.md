@@ -2,7 +2,7 @@
 
 Renders a [Pell WYSIWYG text editor plugin](https://github.com/jaredreich/pell) widget.
 
-[![Live demo](https://raw.githubusercontent.com/jaredreich/pell/master/demo.gif?raw=true "Demo")]
+![Live demo](https://raw.githubusercontent.com/jaredreich/pell/master/demo.gif?raw=true "Demo")
 
 ## Installation
 
