@@ -143,8 +143,10 @@ class Pell extends PellInputWidget
         PellAsset::register($view);
         $wrapperId = $this->getWrapperId();
 
-        $this->clientOptions['element'] = new JsExpression("document.getElementById('$wrapperId')");
-        
+        //Nrrd set element as first in client cinfig array (bug in plugin!)
+        $element = new JsExpression("document.getElementById('$wrapperId')");
+        $this->clientOptions = array_merge(['element' => $element], $this->clientOptions);
+
         //If widget used inside form and needed generete [Html::textarea] or [Html::activeTextarea]
         if($this->asFormPart){
             $textAreaId = $this->getTextAreaId();
@@ -163,6 +165,7 @@ class Pell extends PellInputWidget
 
         //Init plugin javascript
         $js[] = "const $editorJsVar = pell.init($clientOptions);";
+        $js[] = "console.log($clientOptions);";
 
         //If isset default value like value from db, or if set [$this->value]
         if($this->hasDefaultValue()){
