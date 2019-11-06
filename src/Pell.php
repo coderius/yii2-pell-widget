@@ -5,20 +5,65 @@
  * @license This program is free software: the MIT License (MIT)
  * @author Sergio Coderius <sunrise4fun@gmail.com>
  */
+
 namespace coderius\pell;
 
 use yii\helpers\Html;
 use yii\helpers\Json;
-use yii\widgets\InputWidget;
+use coderius\pell\PellInputWidget;
 use yii\web\View;
 use yii\web\JsExpression;
 use yii\helpers\ArrayHelper;
+use yii\base\InvalidParamException;
 
 /**
  * Pell widget renders a pell js plugin for WYSIWYG editing.
+ * 
+ * For example to use the Pell widget with a [[\yii\base\Model|model]]:
+ *
+ * ```php
+ * echo Pell::widget([
+ *     'model' => $model,
+ *     'attribute' => 'text',
+ * ]);
+ * ```
+ *
+ * The following example will used not as an element of form:
+ *
+ * ```php
+ * echo Pell::widget([
+ *     'asFormPart'  => false,
+ *     'value'  => $value,
+ * ]);
+ * ```
+ * 
+ * You can also use this widget in an [[\yii\widgets\ActiveForm|ActiveForm]] using the [[\yii\widgets\ActiveField::widget()|widget()]]
+ * method, for example like this:
+ * 
+ * ```php
+ * use coderius\pell\Pell;
+ * 
+ * <?= $form->field($model, 'text')->widget(Pell::className(), []);?>
+ * ```
+ * 
+ * Note that if Pell widget using inside form - [Pell::asFormPart] must be set to true (by default)
+ * 
+ * @author Sergio Coderius <sunrise4fun@gmail.com>
  */ 
-class Pell extends InputWidget
+class Pell extends PellInputWidget
 {
+    /**
+     * If widget used inside form
+     *
+     * @var boolean
+     */
+    public $asFormPart = true;
+
+    /**
+     * Container tag for widget
+     *
+     * @var array
+     */
     public $wrapperOptions = [];
     
     /**
@@ -29,13 +74,6 @@ class Pell extends InputWidget
     public $clientOptions = [];
 
     /**
-     * Generated HTML wrapper tag div
-     *
-     * @var string
-     */
-    protected $wrapper;
-    
-    /**
      * Initializes the Pell widget.
      * This method will initialize required property values and create wrapper html tag.
      * @return void
@@ -44,8 +82,11 @@ class Pell extends InputWidget
     {
         parent::init();
 
-        $textarea = $this->getTextArea();
-        
+        //If widget is used as part of the form, setting [clientOptions['onChange']] from widget options not allowed
+        if(isset($this->clientOptions['onChange']) && $this->asFormPart){
+            throw new InvalidParamException("Param 'onChange' cannot be specified if the widget is used as part of the form");
+        }
+
         if(!isset($this->wrapperOptions['tag'])){
             $this->wrapperOptions['tag'] = 'div';
         }
@@ -55,14 +96,11 @@ class Pell extends InputWidget
         }
 
         if(!isset($this->wrapperOptions['class'])){
-            $this->wrapperOptions['class'] = $this->field->inputOptions['class'];
+            //From yii\widgets\ActiveField [$inputOptions = ['class' => 'form-control']]
+            $this->wrapperOptions['class'] = 'form-control';
+
             Html::addCssStyle($this->wrapperOptions, 'height: auto', false);
         }
-
-        $tag = $this->wrapperOptions['tag'];
-        ArrayHelper::remove($this->wrapperOptions, 'tag');
-        
-        $this->wrapper = Html::tag($tag, $textarea, $this->wrapperOptions);
     }
 
     /**
@@ -70,11 +108,29 @@ class Pell extends InputWidget
      */
     public function run()
     {
-        echo $this->wrapper;
-        $this->registerClientScript();
+        echo $this->renderWidget() . "\n";
 
-        // var_dump($this->model);
+        $this->registerClientScript();
     }
+
+    /**
+     * Renders the Pell widget.
+     * @return string the rendering result.
+     */
+    protected function renderWidget()
+    {
+        $content = null;
+
+        //If [$this->asFormPart === true] then create hidden textarea inside wrapper to seva passed data
+        if($this->asFormPart){
+            $content = $this->getTextArea();
+        }
+        
+        $tag = $this->wrapperOptions['tag'];
+        ArrayHelper::remove($this->wrapperOptions, 'tag');
+        
+        return Html::tag($tag, $content, $this->wrapperOptions);
+    }    
 
     /**
      * Registers Pell js plugin
@@ -84,45 +140,39 @@ class Pell extends InputWidget
     {
         $js = [];
         $view = $this->getView();
-
         PellAsset::register($view);
-
-        $textAreaId = $this->getTextAreaId();
         $wrapperId = $this->getWrapperId();
 
         $this->clientOptions['element'] = new JsExpression("document.getElementById('$wrapperId')");
-        $this->clientOptions['onChange'] = new JsExpression(
-            "html => {
-                document.getElementById('$textAreaId').innerHTML = html;
-            },"
-        );
+        
+        //If widget used inside form and needed generete [Html::textarea] or [Html::activeTextarea]
+        if($this->asFormPart){
+            $textAreaId = $this->getTextAreaId();
+            //Write content from editor to hidden texarea when that was changed
+            $this->clientOptions['onChange'] = new JsExpression(
+                "html => {
+                    document.getElementById('$textAreaId').innerHTML = html;
+                },"
+            );
+        }
+        
         $clientOptions = Json::encode($this->clientOptions);
 
         //Editor js instance constant name
         $editorJsVar = "pellEditor_" . $this->getId();
 
         //Init plugin javascript
-        $js[] = "const $editorJsVar = window.pell.init($clientOptions);";
+        $js[] = "const $editorJsVar = pell.init($clientOptions);";
 
-        //If isset value data as db value
+        //If isset default value like value from db, or if set [$this->value]
         if($this->hasDefaultValue()){
             $defVal = $this->getDefaultValue();
 
-            // $js[] = "$editorJsVar.content.innerHTML = $defVal";
+            //Pass value to editor
             $js[] = new JsExpression("$editorJsVar.content.innerHTML = `$defVal`");
         }
         
         $view->registerJs(implode("\n", $js), View::POS_END);
-    }
-
-    /**
-     * Return wrapper id for wrapper tag id attribute
-     *
-     * @return string
-     */
-    protected function getWrapperId()
-    {
-        return 'pell-'. $this->getId();
     }
 
     /**
@@ -145,6 +195,16 @@ class Pell extends InputWidget
     }
 
     /**
+     * Return wrapper id for wrapper tag id attribute
+     *
+     * @return string
+     */
+    protected function getWrapperId()
+    {
+        return 'pell-'. $this->getId();
+    }
+
+    /**
      * Return a textarea attribute id
      *
      * @return string
@@ -161,13 +221,12 @@ class Pell extends InputWidget
      */
     protected function getDefaultValue()
     {
-        if (isset($this->options['value'])) {
-            $value = $this->options['value'];
-            unset($this->options['value']);
-        } else {
+        if ($this->hasModel()) {
             $value = Html::getAttributeValue($this->model, $this->attribute);
+        } else {
+            $value = $this->value;
         }
-       
+
         return $value;
     }
 

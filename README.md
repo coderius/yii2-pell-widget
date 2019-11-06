@@ -23,8 +23,27 @@ to the require section of your application's `composer.json` file.
 
 ## Usage
 
-Basic usage in ActiveForm widget:
-```
+For example to use the datepicker with a [[\yii\base\Model|model]]:
+
+ ```php
+echo Pell::widget([
+    'model' => $model,
+    'attribute' => 'text',
+]);
+  ```
+ 
+The following example will used not as an element of form:
+ 
+  ```php
+echo Pell::widget([
+    'asFormPart'  => false,
+    'value'  => $value,
+]);
+  ```
+  
+You can also use this widget in an [[\yii\widgets\ActiveForm|ActiveForm]] using the [[\yii\widgets\ActiveField::widget()|widget()]] method, for example like this:
+
+```php
 
 use coderius\pell\Pell;
 
