@@ -104,7 +104,7 @@ class Pell extends InputWidget
         //Init plugin javascript
         $js[] = "const $editorJsVar = window.pell.init($clientOptions);";
 
-        //If isset value data
+        //If isset value data as db value
         if($this->hasDefaultValue()){
             $defVal = $this->getDefaultValue();
 

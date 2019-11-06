@@ -2,6 +2,8 @@
 
 Renders a [Pell WYSIWYG text editor plugin](https://github.com/jaredreich/pell) widget.
 
+[![Live demo](https://raw.githubusercontent.com/jaredreich/pell/master/demo.gif?raw=true "Demo")]
+
 ## Installation
 
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
@@ -21,7 +23,7 @@ to the require section of your application's `composer.json` file.
 
 ## Usage
 
-
+Basic usage in ActiveForm widget:
 ```
 
 use coderius\pell\Pell;
