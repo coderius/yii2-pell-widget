@@ -38,6 +38,13 @@ The following example will used not as an element of form:
 echo Pell::widget([
     'asFormPart'  => false,
     'value'  => $value,
+    'clientOptions' =>[
+        'onChange' => new JsExpression(
+            "html => {
+                console.log(html);
+            },"
+        )
+    ]
 ]);
   ```
   

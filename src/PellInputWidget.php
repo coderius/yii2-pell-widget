@@ -48,7 +48,7 @@ class PellInputWidget extends Widget
      * @var array the HTML attributes for the widget container tag.
      * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
      */
-    public $options = [];
+    public $inputOptions = [];
 
     /**
      * Initializes the widget.
@@ -56,8 +56,8 @@ class PellInputWidget extends Widget
      */
     public function init()
     {
-        if ($this->hasModel() && !isset($this->options['id'])) {
-            $this->options['id'] = Html::getInputId($this->model, $this->attribute);
+        if ($this->hasModel() && !isset($this->inputOptions['id'])) {
+            $this->inputOptions['id'] = Html::getInputId($this->model, $this->attribute);
         }
         parent::init();
     }

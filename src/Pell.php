@@ -53,7 +53,7 @@ use yii\base\InvalidParamException;
 class Pell extends PellInputWidget
 {
     /**
-     * If widget used inside form
+     * If widget used inside form, then param `$asFormPart` must be set as true and tag textarea (hidden) must be created
      *
      * @var boolean
      */
@@ -82,9 +82,14 @@ class Pell extends PellInputWidget
     {
         parent::init();
 
-        //If widget is used as part of the form, setting [clientOptions['onChange']] from widget options not allowed
-        if(isset($this->clientOptions['onChange']) && $this->asFormPart){
-            throw new InvalidParamException("Param 'onChange' cannot be specified if the widget is used as part of the form");
+        //Attribute id in textarea must be set
+        if(!isset($this->inputOptions['id']) && true === $this->asFormPart){
+            throw new InvalidParamException("Param 'inputOptions[id]' must be specified.");
+        }
+
+        //In Html::textarea attribute name must be set
+        if(!$this->name && true === $this->asFormPart && false === $this->hasModel()){
+            throw new InvalidParamException("Param 'name' must be specified.");
         }
 
         if(!isset($this->wrapperOptions['tag'])){
@@ -100,6 +105,15 @@ class Pell extends PellInputWidget
             $this->wrapperOptions['class'] = 'form-control';
 
             Html::addCssStyle($this->wrapperOptions, 'height: auto', false);
+        }
+
+        //If widget is used as part of the form, setting [clientOptions['onChange']] from widget options not allowed
+        if(isset($this->clientOptions['onChange']) && $this->asFormPart){
+            throw new InvalidParamException("Param 'onChange' cannot be specified if the widget is used as part of the form.");
+        }
+
+        if(isset($this->clientOptions['element'])){
+            throw new InvalidParamException("Param 'element' cannot be specified. This param set by widget.");
         }
     }
 
@@ -143,10 +157,10 @@ class Pell extends PellInputWidget
         PellAsset::register($view);
         $wrapperId = $this->getWrapperId();
 
-        //Nrrd set element as first in client cinfig array (bug in plugin!)
         $element = new JsExpression("document.getElementById('$wrapperId')");
-        $this->clientOptions = array_merge(['element' => $element], $this->clientOptions);
 
+        $this->clientOptions['element'] = $element;
+        
         //If widget used inside form and needed generete [Html::textarea] or [Html::activeTextarea]
         if($this->asFormPart){
             $textAreaId = $this->getTextAreaId();
@@ -165,9 +179,8 @@ class Pell extends PellInputWidget
 
         //Init plugin javascript
         $js[] = "const $editorJsVar = pell.init($clientOptions);";
-        $js[] = "console.log($clientOptions);";
-
-        //If isset default value like value from db, or if set [$this->value]
+        
+        //If isset default value like value from db, or if set `$this->value`
         if($this->hasDefaultValue()){
             $defVal = $this->getDefaultValue();
 
@@ -186,12 +199,12 @@ class Pell extends PellInputWidget
      */
     protected function getTextArea()
     {
-        Html::addCssStyle($this->options, 'display:none;');
+        Html::addCssStyle($this->inputOptions, 'display:none;');
 
         if ($this->hasModel()) {
-            $textarea = Html::activeTextarea($this->model, $this->attribute, $this->options);
+            $textarea = Html::activeTextarea($this->model, $this->attribute, $this->inputOptions);
         } else {
-            $textarea = Html::textarea($this->name, $this->value, $this->options);
+            $textarea = Html::textarea($this->name, $this->value, $this->inputOptions);
         }
 
         return $textarea;
@@ -214,11 +227,11 @@ class Pell extends PellInputWidget
      */
     protected function getTextAreaId()
     {
-        return $this->options['id'];
+        return $this->inputOptions['id'];
     }
 
     /**
-     * Return default value returned of model attribute if exists or by passed to `options['value']`
+     * Return default value returned of model attribute if exists or by passed to `inputOptions['value']`
      *
      * @return string
      */
