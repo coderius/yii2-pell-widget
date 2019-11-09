@@ -107,6 +107,9 @@ plain JS, make use of `JsExpression`. That class was made by Yii for that specif
 ]); ?>
 ```
 
+## Examples widget usage
+Please see [Examples usage in yii2 view files](./examples/some-yii2-view) for details.
+
 ## Testing
 
 ``` bash
