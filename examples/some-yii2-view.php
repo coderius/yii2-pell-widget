@@ -28,7 +28,7 @@ use yii\widgets\ActiveForm;
 
 <?php 
 //------------------------------------------------------------------------
-//Usage in Active Form 
+//Usage in Active Form widget
 //------------------------------------------------------------------------
 ?>
 <?php $form = ActiveForm::begin(); ?>
@@ -62,6 +62,12 @@ use yii\widgets\ActiveForm;
             
         ]
     ]);
+
+    echo \coderius\pell\Pell::widget([
+        'value'  => 'Some',
+        'name' => 'input-name',
+    ]);
+
 ?>
 
 <?= Html::submitButton('Submit', ['class' => 'submit']) ?>
@@ -85,6 +91,11 @@ use yii\widgets\ActiveForm;
         'clientOptions' =>[
             
         ]
+    ]);
+
+    echo \coderius\pell\Pell::widget([
+        'model'  => $model,
+        'attribute' => 'text',
     ]);
 ?>
 

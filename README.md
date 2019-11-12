@@ -1,4 +1,4 @@
-# Pell content editor Widget for Yii2
+# Pell content WYSIWYG editor Widget for Yii2
 
 Renders a [Pell WYSIWYG text editor plugin](https://github.com/jaredreich/pell) widget.
 
@@ -108,7 +108,7 @@ plain JS, make use of `JsExpression`. That class was made by Yii for that specif
 ```
 
 ## Examples widget usage
-Please see [Examples usage in yii2 view files](./examples/some-yii2-view) for details.
+Please see [Examples usage in yii2 view files](https://github.com/coderius/yii2-pell-widget/blob/master/examples/some-yii2-view.php) for more examples.
 
 ## Testing
 

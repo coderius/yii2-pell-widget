@@ -73,6 +73,8 @@ class Pell extends PellInputWidget
      */
     public $clientOptions = [];
 
+    private $clientPluginInstance = 'pell';
+
     /**
      * Initializes the Pell widget.
      * This method will initialize required property values and create wrapper html tag.
@@ -84,7 +86,8 @@ class Pell extends PellInputWidget
 
         //Attribute id in textarea must be set
         if(!isset($this->inputOptions['id']) && true === $this->asFormPart){
-            throw new InvalidParamException("Param 'inputOptions[id]' must be specified.");
+            $pell = $this->clientPluginInstance;
+            $this->inputOptions['id'] = "$pell-textarea-" . $this->getId();
         }
 
         //In Html::textarea attribute name must be set
@@ -173,12 +176,13 @@ class Pell extends PellInputWidget
         }
         
         $clientOptions = Json::encode($this->clientOptions);
+        $pell = $this->clientPluginInstance;
 
         //Editor js instance constant name
-        $editorJsVar = "pellEditor_" . $this->getId();
+        $editorJsVar = "{$pell}Editor_" . $this->getId();
 
         //Init plugin javascript
-        $js[] = "const $editorJsVar = pell.init($clientOptions);";
+        $js[] = "const $editorJsVar = $pell.init($clientOptions);";
         
         //If isset default value like value from db, or if set `$this->value`
         if($this->hasDefaultValue()){
@@ -217,7 +221,8 @@ class Pell extends PellInputWidget
      */
     protected function getWrapperId()
     {
-        return 'pell-'. $this->getId();
+        $pell = $this->clientPluginInstance;
+        return "$pell-wrap-". $this->getId();
     }
 
     /**

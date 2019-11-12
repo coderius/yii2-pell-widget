@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<link href="/47457fd6/pell.css?v=1573329009" rel="stylesheet"></head>
+<body>
+
+<form id="w2" action="/tests" method="post">
+<div class="form-group field-post-message">
+<label class="control-label" for="post-message">Message</label>
+<div id="pell-wrap-w3" class="form-control" style="height: auto"><textarea id="post-message" name="Post[message]" style="display:none;"></textarea></div>
+
+
+<div class="help-block"></div>
+</div>
+<div class="form-group">
+<button type="submit" class="btn btn-success">Save</button></div>
+
+</form><script src="/47457fd6/pell.js?v=1573329009"></script>
+<script src="/54622894/jquery.js?v=1573333595"></script>
+<script src="/ffe44444/yii.js?v=1573333595"></script>
+<script src="/ffe44444/yii.activeForm.js?v=1573333595"></script>
+<script>const pellEditor_w3 = pell.init({"element":document.getElementById('pell-wrap-w3'),"onChange":html => {
+                    document.getElementById('post-message').innerHTML = html;
+                },});</script>
+<script>jQuery(function ($) {
+jQuery('#w2').yiiActiveForm([], []);
+});</script></body>
+</html>
