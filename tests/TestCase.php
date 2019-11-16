@@ -8,6 +8,8 @@ use yii\base\Module;
 use yii\di\Container;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
+use yii\web\View;
+use yii\web\AssetManager;
 /**
  * This is the base class for all yii framework unit tests.
  */

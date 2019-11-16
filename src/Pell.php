@@ -73,7 +73,7 @@ class Pell extends PellInputWidget
      */
     public $clientOptions = [];
 
-    private $clientPluginInstance = 'pell';
+    protected $clientPluginInstanceName = 'pell';
 
     /**
      * Initializes the Pell widget.
@@ -86,13 +86,13 @@ class Pell extends PellInputWidget
 
         //Attribute id in textarea must be set
         if(!isset($this->inputOptions['id']) && true === $this->asFormPart){
-            $pell = $this->clientPluginInstance;
+            $pell = $this->clientPluginInstanceName;
             $this->inputOptions['id'] = "$pell-textarea-" . $this->getId();
         }
 
         //In Html::textarea attribute name must be set
         if(!$this->name && true === $this->asFormPart && false === $this->hasModel()){
-            throw new InvalidParamException("Param 'name' must be specified.");
+            throw new InvalidParamException("Param 'name' must be specified for textarea attribute name.");
         }
 
         if(!isset($this->wrapperOptions['tag'])){
@@ -126,8 +126,8 @@ class Pell extends PellInputWidget
     public function run()
     {
         echo $this->renderWidget() . "\n";
-
-        $this->registerClientScript();
+        $js = $this->buildClientScript();
+        $this->registerClientScript($js);
     }
 
     /**
@@ -143,23 +143,21 @@ class Pell extends PellInputWidget
             $content = $this->getTextArea();
         }
         
-        $tag = $this->wrapperOptions['tag'];
+        $tag = $this->getWrapperTag();
         ArrayHelper::remove($this->wrapperOptions, 'tag');
         
         return Html::tag($tag, $content, $this->wrapperOptions);
     }    
 
     /**
-     * Registers Pell js plugin
-     * @return void
+     * Build js script
+     *
+     * @return string
      */
-    protected function registerClientScript()
+    protected function buildClientScript()
     {
         $js = [];
-        $view = $this->getView();
-        PellAsset::register($view);
         $wrapperId = $this->getWrapperId();
-
         $element = new JsExpression("document.getElementById('$wrapperId')");
 
         $this->clientOptions['element'] = $element;
@@ -169,19 +167,20 @@ class Pell extends PellInputWidget
             $textAreaId = $this->getTextAreaId();
             //Write content from editor to hidden texarea when that was changed
             $this->clientOptions['onChange'] = new JsExpression(
-                "html => {
-                    document.getElementById('$textAreaId').innerHTML = html;
-                },"
+            "html => {
+    document.getElementById('$textAreaId').innerHTML = html;
+},"
             );
         }
         
         $clientOptions = Json::encode($this->clientOptions);
-        $pell = $this->clientPluginInstance;
+        $pell = $this->clientPluginInstanceName;
 
         //Editor js instance constant name
         $editorJsVar = "{$pell}Editor_" . $this->getId();
 
         //Init plugin javascript
+        $js[] = "";//set \n
         $js[] = "const $editorJsVar = $pell.init($clientOptions);";
         
         //If isset default value like value from db, or if set `$this->value`
@@ -191,8 +190,25 @@ class Pell extends PellInputWidget
             //Pass value to editor
             $js[] = new JsExpression("$editorJsVar.content.innerHTML = `$defVal`");
         }
-        
-        $view->registerJs(implode("\n", $js), View::POS_END);
+        $js[] = "";//set \n
+
+        return implode("\n", $js);
+    }    
+
+    /**
+     * Registers Pell js plugin
+     * @param string $js the JS code block to be registered
+     * @param string $key the key that identifies the JS code block. If null, it will use
+     * $js as the key. If two JS code blocks are registered with the same key, the latter
+     * will overwrite the former.
+     * 
+     * @return void
+     */
+    protected function registerClientScript($js, $key = null)
+    {
+        $view = $this->getView();
+        PellAsset::register($view);
+        $view->registerJs($js, View::POS_END, $key);
     }
 
     /**
@@ -219,10 +235,15 @@ class Pell extends PellInputWidget
      *
      * @return string
      */
-    protected function getWrapperId()
+    public function getWrapperId()
     {
-        $pell = $this->clientPluginInstance;
+        $pell = $this->clientPluginInstanceName;
         return "$pell-wrap-". $this->getId();
+    }
+
+    public function getWrapperClass()
+    {
+        return $this->wrapperOptions['class'];
     }
 
     /**
@@ -230,11 +251,21 @@ class Pell extends PellInputWidget
      *
      * @return string
      */
-    protected function getTextAreaId()
+    public function getTextAreaId()
     {
         return $this->inputOptions['id'];
     }
 
+    /**
+     * Return wrapper tag name
+     *
+     * @return string
+     */
+    public function getWrapperTag()
+    {
+        return $this->wrapperOptions['tag'];
+    }
+    
     /**
      * Return default value returned of model attribute if exists or by passed to `inputOptions['value']`
      *

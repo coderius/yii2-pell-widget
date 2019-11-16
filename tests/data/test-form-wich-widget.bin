@@ -20,9 +20,11 @@
 <script src="/54622894/jquery.js?v=1573333595"></script>
 <script src="/ffe44444/yii.js?v=1573333595"></script>
 <script src="/ffe44444/yii.activeForm.js?v=1573333595"></script>
-<script>const pellEditor_w3 = pell.init({"element":document.getElementById('pell-wrap-w3'),"onChange":html => {
-                    document.getElementById('post-message').innerHTML = html;
-                },});</script>
+<script>
+const pellEditor_w3 = pell.init({"element":document.getElementById('pell-wrap-w3'),"onChange":html => {
+    document.getElementById('post-message').innerHTML = html;
+},});
+</script>
 <script>jQuery(function ($) {
 jQuery('#w2').yiiActiveForm([], []);
 });</script></body>
