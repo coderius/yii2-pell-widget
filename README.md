@@ -23,7 +23,7 @@ to the require section of your application's `composer.json` file.
 
 ## Usage
 
-For example to use the datepicker with a [[\yii\base\Model|model]]:
+For example to use the pell editor with a [[\yii\base\Model|model]]:
 
  ```php
 echo Pell::widget([
@@ -32,6 +32,18 @@ echo Pell::widget([
 ]);
   ```
  
+Inside form without model:
+
+ ```php
+$value = 'textarea some content';
+
+echo \coderius\pell\Pell::widget([
+    'name' => 'textarea-name',
+    'value'  => $value,
+    'clientOptions' =>[]
+]);
+```
+
 The following example will used not as an element of form:
  
   ```php
