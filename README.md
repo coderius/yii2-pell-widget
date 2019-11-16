@@ -1,4 +1,12 @@
-# Pell content WYSIWYG editor Widget for Yii2
+Pell content WYSIWYG editor Widget for Yii2
+===========================================
+
+[![Software License](https://img.shields.io/github/license/coderius/yii2-pell-widget)](LICENSE.md)
+[![Code Coverage](https://scrutinizer-ci.com/g/coderius/yii2-pell-widget/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/coderius/yii2-pell-widget/?branch=master)
+[![Code Intelligence Status](https://scrutinizer-ci.com/g/coderius/yii2-pell-widget/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
+[![Code Quality](https://img.shields.io/scrutinizer/quality/g/coderius/yii2-pell-widget.svg?style=flat-square)](https://scrutinizer-ci.com/g/coderius/yii2-pell-widget/?branch=master)
+[![CodeFactor](https://img.shields.io/codefactor/grade/github/coderius/yii2-pell-widget)](https://www.codefactor.io/repository/github/coderius/yii2-pell-widget)
+[![Build Status](https://scrutinizer-ci.com/g/coderius/yii2-pell-widget/badges/build.png?b=master)](https://scrutinizer-ci.com/g/coderius/yii2-pell-widget/build-status/master)
 
 Renders a [Pell WYSIWYG text editor plugin](https://github.com/jaredreich/pell) widget.
 
