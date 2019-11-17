@@ -12,7 +12,7 @@ use coderius\pell\Pell;
 use tests\models\Post;
 use yii\web\View;
 use tests\overrides\TestPell;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 use yii\web\JsExpression;
 use Yii;
 
@@ -114,7 +114,7 @@ JS;
 
     public function testInitTextareaWithoutName()
     {
-        $this->expectException(InvalidParamException::class);
+        $this->expectException(InvalidArgumentException::class);
         
         $widget = Pell::widget(
             [
@@ -125,7 +125,7 @@ JS;
     
     public function testInitTextareaWithOnChange()
     {
-        $this->expectException(InvalidParamException::class);
+        $this->expectException(InvalidArgumentException::class);
         
         $widget = Pell::widget(
             [
@@ -162,7 +162,7 @@ JS;
 
     public function testCantSetClientOptionsElement()
     {
-        $this->expectException(InvalidParamException::class);
+        $this->expectException(InvalidArgumentException::class);
         
         $widget = TestPell::begin(
             [

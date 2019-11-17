@@ -33,7 +33,7 @@ use yii\widgets\ActiveForm;
 ?>
 <?php $form = ActiveForm::begin(); ?>
 
-<?= $form->field($model, 'text')->widget(\coderius\pell\Pell::className(), []); ?>
+<?= $form->field($model, 'text')->widget(\coderius\pell\Pell::class, []); ?>
 
 <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

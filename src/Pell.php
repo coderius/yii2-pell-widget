@@ -14,7 +14,7 @@ use coderius\pell\PellInputWidget;
 use yii\web\View;
 use yii\web\JsExpression;
 use yii\helpers\ArrayHelper;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 
 /**
  * Pell widget renders a pell js plugin for WYSIWYG editing.
@@ -92,7 +92,7 @@ class Pell extends PellInputWidget
 
         //In Html::textarea attribute name must be set
         if(!$this->name && true === $this->asFormPart && false === $this->hasModel()){
-            throw new InvalidParamException("Param 'name' must be specified for textarea attribute name.");
+            throw new InvalidArgumentException("Param 'name' must be specified for textarea attribute name.");
         }
 
         if(!isset($this->wrapperOptions['tag'])){
@@ -112,11 +112,11 @@ class Pell extends PellInputWidget
 
         //If widget is used as part of the form, setting [clientOptions['onChange']] from widget options not allowed
         if(isset($this->clientOptions['onChange']) && $this->asFormPart){
-            throw new InvalidParamException("Param 'onChange' cannot be specified if the widget is used as part of the form.");
+            throw new InvalidArgumentException("Param 'onChange' cannot be specified if the widget is used as part of the form.");
         }
 
         if(isset($this->clientOptions['element'])){
-            throw new InvalidParamException("Param 'element' cannot be specified. This param set by widget.");
+            throw new InvalidArgumentException("Param 'element' cannot be specified. This param set by widget.");
         }
     }
 
