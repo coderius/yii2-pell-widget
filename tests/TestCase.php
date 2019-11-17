@@ -62,9 +62,10 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
                     'rules' => [],
                 ],
                 'assetManager' => [
+                    'class' => 'tests\AssetManager',
                     'basePath' => '@tests/assets',
                     'baseUrl' => '/',
-                    'appendTimestamp' => true,
+                    // 'appendTimestamp' => true,
                 ], 
             ],
             'modules' => [],
