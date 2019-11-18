@@ -7,7 +7,8 @@ Pell content WYSIWYG editor Widget for Yii2
 [![Code Quality](https://img.shields.io/scrutinizer/quality/g/coderius/yii2-pell-widget.svg?style=flat-square)](https://scrutinizer-ci.com/g/coderius/yii2-pell-widget/?branch=master)
 [![Code Intelligence Status](https://scrutinizer-ci.com/g/coderius/yii2-pell-widget/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
 [![Build Status](https://scrutinizer-ci.com/g/coderius/yii2-pell-widget/badges/build.png?b=master)](https://scrutinizer-ci.com/g/coderius/yii2-pell-widget/build-status/master)
-[![Build Status travis](https://travis-ci.org/coderius/yii2-pell-widget.svg?branch=master)](https://travis-ci.org/coderius/yii2-pell-widget)
+[![Build Status travis](https://img.shields.io/travis/coderius/yii2-pell-widget?label=travis%20build&style=flat-square)](https://travis-ci.org/coderius/yii2-pell-widget)
+
 
 Renders a [Pell WYSIWYG text editor plugin](https://github.com/jaredreich/pell) widget.
 
