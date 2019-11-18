@@ -10,11 +10,13 @@ php:
 install:
   - composer self-update
   - composer global require "fxp/composer-asset-plugin:^1.2.0"
-  - composer update
+  - composer install
 
 before_script:
   - travis_retry composer self-update
   - travis_retry composer install --no-interaction --prefer-source --dev
+  - rm composer.lock
+  - composer install --no-interaction --prefer-source
 
 script:
   - composer info | sort
