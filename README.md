@@ -1,9 +1,9 @@
 Pell content WYSIWYG editor Widget for Yii2
 ===========================================
 
+[![Latest Version](https://img.shields.io/github/release/coderius/yii2-pell-widget.svg?style=flat-square)](https://github.com/coderius/yii2-pell-widget/releases)
 [![Software License](https://img.shields.io/github/license/coderius/yii2-pell-widget)](LICENSE.md)
 [![Code Coverage](https://scrutinizer-ci.com/g/coderius/yii2-pell-widget/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/coderius/yii2-pell-widget/?branch=master)
-[![Code Intelligence Status](https://scrutinizer-ci.com/g/coderius/yii2-pell-widget/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
 [![Code Quality](https://img.shields.io/scrutinizer/quality/g/coderius/yii2-pell-widget.svg?style=flat-square)](https://scrutinizer-ci.com/g/coderius/yii2-pell-widget/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/coderius/yii2-pell-widget/badges/build.png?b=master)](https://scrutinizer-ci.com/g/coderius/yii2-pell-widget/build-status/master)
 
